@@ -59,7 +59,7 @@ logo.setAttribute('company', 'Bankist');
 logo.getAttribute('src');
 
 const link = document.querySelector('.twitter-link');
-console.log(logo.dataset.versionNumber);
+// console.log(logo.dataset.versionNumber);
 
 // logo.classList.add('c');
 // logo.classList.remove('c');
@@ -112,16 +112,78 @@ btnScroll.addEventListener('click', function (e) {
 //   });
 // });
 
-console.log(document.querySelectorAll('.nav__link')[1].getAttribute('href'));
+// console.log(document.querySelectorAll('.nav__link')[1].getAttribute('href'));
 
 document.querySelector('.nav__links').addEventListener('click', function (e) {
   e.preventDefault();
   console.log(e.target);
   if (e.target.classList.contains('nav__link')) {
     const id = e.target.getAttribute('href');
-    console.log(id);
+    // console.log(id)
     document.querySelector(id).scrollIntoView({
       behavior: 'smooth',
     });
   }
 });
+
+const h1 = document.querySelector('h1');
+
+//Going downwards: child
+// console.log(h1.querySelectorAll('.highlight'));
+// console.log(h1.childNodes);
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+//Going downwards: parents
+// console.log(h1.closest('.header'));
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+//Going sideways: siblings
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) {
+    el.style.transform = 'scale(0.5)';
+  }
+});
+
+//Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+// console.log(tabs);
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+  if (!clicked) return;
+  //Remove Active tab
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+  //Active tab
+  clicked.classList.add('operations__tab--active');
+
+  //Active content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+//Menu fade animation
+const nav = document.querySelector('.nav');
+
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) {
+        el.style.opacity = this;
+      }
+    });
+    logo.style.opacity = this;
+  }
+};
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+nav.addEventListener('mouseout', handleHover.bind(1));
