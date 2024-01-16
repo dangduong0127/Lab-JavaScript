@@ -23,15 +23,15 @@ let Login = () => {
       alert("Đăng nhập thành công");
       localStorage.setItem("currentUser", JSON.stringify(search));
       window.location.href = "../index.html";
+      checkisLogged();
     } else {
       alert("Sai tên tài khoản hoặc mật khẩu");
     }
   }
 };
-isLogged();
-function isLogged() {
-  const loggedInUser = JSON.parse(localStorage.getItem("currentUser"));
-  if (loggedInUser) {
+
+function checkisLogged() {
+  if (isLogged) {
     window.location.href = "../index.html";
   }
 }

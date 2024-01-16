@@ -36,16 +36,6 @@ let ClearInput = () => {
   cf_password.value = "";
 };
 
-function parseUser(userData) {
-  const user = new User(
-    userData.firstName,
-    userData.lastName,
-    userData.username,
-    userData.password
-  );
-  return user;
-}
-
 let Register = () => {
   validate();
   const users = new User(
@@ -54,6 +44,7 @@ let Register = () => {
     userName.value,
     password.value
   );
+
   if (isVal) {
     const search = userArr.find((x) => x.username === userName.value);
 

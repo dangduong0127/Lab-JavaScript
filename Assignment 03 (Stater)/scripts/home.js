@@ -3,13 +3,12 @@
 const logginModel = document.querySelector(".row");
 const textContent = document.querySelector(".inner-text");
 const LoggoutBtn = document.querySelector("#main-content");
-
-function isLogged() {
-  const loggedInUser = JSON.parse(localStorage.getItem("currentUser"));
-  if (loggedInUser) {
+console.log(isLogged);
+function display() {
+  if (isLogged) {
     LoggoutBtn.style.display = "block";
     logginModel.style.display = "none";
-    textContent.innerHTML = `Welcome ${loggedInUser.firstName}`;
+    textContent.innerHTML = `Welcome ${isLogged.firstName}`;
   } else {
     LoggoutBtn.style.display = "none";
     logginModel.style.display = "flex";
@@ -17,8 +16,12 @@ function isLogged() {
   }
 }
 
-isLogged();
+display();
 function Logout() {
-  localStorage.removeItem("currentUser");
-  isLogged();
+  const isLogout = confirm("Bạn có chắc chắn muốn đăng xuất ko?");
+  if (isLogout) {
+    localStorage.removeItem("currentUser");
+    isLogged = null;
+    display();
+  }
 }
