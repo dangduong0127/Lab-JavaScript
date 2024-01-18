@@ -1,5 +1,5 @@
 "use strict";
-
+// Kiểm tra người dùng đã đăng nhập hay chưa nếu chưa thì chuyển sang trang Login
 if (isLogged) {
   const todoList = document.querySelector("#todo-list");
   const btn_Add = document.querySelector("#btn-add");
@@ -71,15 +71,18 @@ if (isLogged) {
     // Lấy tất cả phần tử span nằm trong phần tử id = #todo-list
     document.querySelectorAll("#todo-list span").forEach((span) => {
       span.addEventListener("click", function Delete() {
-        // Tìm nút delete của task được user click
-        const search = todoArr.findIndex(
-          (x) => x.task === span.parentElement.textContent.slice(0, -1)
-        );
-        todoArr.splice(search, 1);
-        // Lưu vào localStorage
-        localStorage.setItem("todoList", JSON.stringify(todoArr));
-        // Hiện thị lại dữ liệu ngay sau khi ấn xoá
-        renderTodoList();
+        const cf = confirm("Bạn có chắc chắn muốn xoá không?");
+        if (cf) {
+          // Tìm nút delete của task được user click
+          const search = todoArr.findIndex(
+            (x) => x.task === span.parentElement.textContent.slice(0, -1)
+          );
+          todoArr.splice(search, 1);
+          // Lưu vào localStorage
+          localStorage.setItem("todoList", JSON.stringify(todoArr));
+          // Hiện thị lại dữ liệu ngay sau khi ấn xoá
+          renderTodoList();
+        }
       });
     });
   }

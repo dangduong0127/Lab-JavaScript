@@ -4,6 +4,7 @@ const logginModel = document.querySelector(".row");
 const textContent = document.querySelector(".inner-text");
 const LoggoutBtn = document.querySelector("#main-content");
 console.log(isLogged);
+// Hàm hiển thị thông điệp chào mừng người dùng đăng nhập
 function display() {
   if (isLogged) {
     LoggoutBtn.style.display = "block";
@@ -15,8 +16,9 @@ function display() {
     textContent.innerHTML = `Please Login or Register`;
   }
 }
-
 display();
+
+// Hàm đăng xuất
 function Logout() {
   const isLogout = confirm("Bạn có chắc chắn muốn đăng xuất ko?");
   if (isLogout) {

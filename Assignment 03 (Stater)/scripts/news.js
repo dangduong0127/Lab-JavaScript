@@ -1,45 +1,47 @@
 "use strict";
 
-const APIkey = "fc2349fe24f04b33805a9c19ad677ff8";
-const category = "business";
-const news_container = document.querySelector("#news-container");
-const pageNum = document.querySelector("#page-num");
-const btnNext = document.querySelector("#btn-next");
-const btnPrev = document.querySelector("#btn-prev");
-console.log(isLogged);
+// kiểm tra tài khoản có đăng nhập thì mới hiển thị tin tức
 if (isLogged) {
-  async function getDataFormApi(country, page) {
+  const news_container = document.querySelector("#news-container");
+  const pageNum = document.querySelector("#page-num");
+  const btnNext = document.querySelector("#btn-next");
+  const btnPrev = document.querySelector("#btn-prev");
+  const category = isLogged.category;
+  const pagesize = isLogged.pageSize;
+
+  // Tạo hàm bất đồng bộ lấy data từ API
+  async function getDataFromApi(country, page) {
     try {
       const promise = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=6&page=${page}&apiKey=${APIkey}`
+        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pagesize}&page=${page}&apiKey=${APIkey}`
       );
       const data = await promise.json();
-      console.log(data);
       renderData(data);
     } catch (err) {
       console.error("Đã xảy ra một lỗi: " + err);
     }
   }
-  getDataFormApi("us", 1);
-
+  getDataFromApi("us", 1);
+  // Hàm kiểm tra khi đến page cuối cùng thì ẩn nút Next
   function checkBtNext(dt) {
-    if (pageNum.textContent == Math.ceil(dt.totalResults / 6)) {
+    if (pageNum.textContent == Math.ceil(dt.totalResults / category)) {
       btnNext.style.display = "none";
     } else {
       btnNext.style.display = "block";
     }
   }
-  function checkBtPrev(dt) {
+  // Hàm kiểm tra khi ở page đầu tiên thì ẩn nút Previous
+  function checkBtPrev() {
     if (pageNum.textContent == "1") {
       btnPrev.style.display = "none";
     } else {
       btnPrev.style.display = "block";
     }
   }
-
+  // Hàm in ra các bài báo lấy từ API
   function renderData(dt) {
     checkBtNext(dt);
-    checkBtPrev(dt);
+    checkBtPrev();
     news_container.innerHTML = null;
     dt.articles.forEach((data) => {
       news_container.innerHTML += `
@@ -65,12 +67,15 @@ if (isLogged) {
                 `;
     });
   }
-
+  // Chuyển trang tiếp theo khi nhấn vào nút Next
   btnNext.addEventListener("click", () => {
-    getDataFormApi("us", pageNum.textContent++);
+    getDataFromApi("us", pageNum.textContent++);
   });
-
+  // Lùi về trang trước khi nhấn vào nút Previous
   btnPrev.addEventListener("click", () => {
-    getDataFormApi("us", pageNum.textContent--);
+    getDataFromApi("us", pageNum.textContent--);
   });
+} else {
+  alert("Vui lòng đăng nhập tài khoản!!!");
+  window.location.href = "../index.html";
 }
